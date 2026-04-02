@@ -1,0 +1,16 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+.vscode/
+.idea/
+.DS_Store
+.venv/
+*.keystore
+*.keystore.*
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+uv.lock

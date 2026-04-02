@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shanghaitech-ids-passkey"
+version = "0.1.0"
+description = "ShanghaiTech IDS passkey library and CLI."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "cryptography>=41",
+  "requests>=2.31",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: Other/Proprietary License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Security",
+]
+keywords = ["shanghaitech", "ids", "passkey", "webauthn", "selenium"]
+
+[project.optional-dependencies]
+selenium = [
+  "selenium>=4.0",
+]
+dev = [
+  "build>=1.2",
+  "pytest>=7.4",
+  "pytest-mock>=3.14",
+  "ruff>=0.6",
+  "twine>=5.1",
+]
+
+[project.scripts]
+shanghaitech-ids-passkey = "shanghaitech_ids_passkey._cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
