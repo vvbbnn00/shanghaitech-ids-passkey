@@ -34,7 +34,10 @@ LOGGER = logging.getLogger(__name__)
 
 _SIDEBAR_ACCOUNT_SECURITY_XPATH = '//*[@id="app"]/div/div[2]/div/div/div[1]/ul/li[4]'
 _BIND_BUTTON_XPATH = (
-    '//*[@id="app"]/div/div[2]/div/div/div[2]/div/div/div/div[5]/div/div[6]/div[1]/button'
+    '//*[@id="app"]//div[contains(concat(" ", normalize-space(@class), " "), '
+    '" biometrics-switch ")]//span[contains(concat(" ", normalize-space(@class), " "), '
+    '" ivu-switch ")][.//input[@value="false"]]'
+    ' | //*[@id="app"]/div/div[2]/div/div/div[2]/div/div/div/div[5]/div/div[6]/div[1]/button'
 )
 
 
@@ -90,16 +93,26 @@ class SeleniumBinder:
             )
             account_security_tab.click()
 
-            bind_button = selenium["WebDriverWait"](
+            bind_wait = selenium["WebDriverWait"](
                 driver,
                 timeout=5,
                 poll_frequency=0.2,
                 ignored_exceptions=errors,
-            ).until(
-                selenium["EC"].visibility_of_element_located(
-                    (selenium["By"].XPATH, _BIND_BUTTON_XPATH),
-                ),
             )
+            # The current IDS page exposes a switch instead of the old bind
+            # button. Keep the XPath fallback for older portal deployments.
+            try:
+                bind_button = bind_wait.until(
+                    selenium["EC"].visibility_of_element_located(
+                        (selenium["By"].CSS_SELECTOR, ".biometrics-switch .ivu-switch"),
+                    ),
+                )
+            except Exception:
+                bind_button = bind_wait.until(
+                    selenium["EC"].visibility_of_element_located(
+                        (selenium["By"].XPATH, _BIND_BUTTON_XPATH),
+                    ),
+                )
             bind_button.click()
 
             if recheck_status.get("code", "9999") != "0":

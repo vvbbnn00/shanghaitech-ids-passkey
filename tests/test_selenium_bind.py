@@ -74,6 +74,8 @@ class FakeDriver:
         value = locator[1]
         if value == selenium_bind_module._SIDEBAR_ACCOUNT_SECURITY_XPATH:
             return self.account_tab
+        if value == ".biometrics-switch .ivu-switch":
+            return self.bind_button
         if value == selenium_bind_module._BIND_BUTTON_XPATH:
             return self.bind_button
         return object()
@@ -99,6 +101,7 @@ class FakeExpectedConditions:
 
 class FakeBy:
     XPATH = "xpath"
+    CSS_SELECTOR = "css selector"
     TAG_NAME = "tag_name"
 
 
